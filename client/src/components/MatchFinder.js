@@ -1,7 +1,7 @@
 // src/components/MatchFinder.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import MatchCard from './MatchCard';
+import './MatchFinder.css'; // optional styling
 
 const MatchFinder = () => {
   const [city, setCity] = useState('');
@@ -16,32 +16,32 @@ const MatchFinder = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setMatches([]); // Clear previous matches
+    setMatches([]);
     setLoading(true);
 
     try {
-      const response = await axios.post('https://neighborfit-backend-v6qy.onrender.com/api/match', {
-        city,
-        rent_max: Number(rentMax),
-        safety: Number(safety),
-        schools: Number(schools),
-        parks: Number(parks)
+      const res = await axios.post('https://neighborfit-backend-v6qy.onrender.com/api/match', {
+        city: city.trim(),
+        rent_max: parseInt(rentMax),
+        safety: parseFloat(safety),
+        schools: parseFloat(schools),
+        parks: parseFloat(parks),
       });
 
-      console.log('✅ API Response:', response.data); // Log to debug
+      console.log('✅ Backend Response:', res.data);
 
-      if (response.data && Array.isArray(response.data.matches)) {
-        if (response.data.matches.length > 0) {
-          setMatches(response.data.matches);
+      if (res.data && Array.isArray(res.data.matches)) {
+        if (res.data.matches.length > 0) {
+          setMatches(res.data.matches);
         } else {
           setError('No matches found.');
         }
       } else {
-        setError('Unexpected response format from server.');
+        setError('Invalid response from backend.');
       }
 
     } catch (err) {
-      console.error('❌ Error:', err);
+      console.error('❌ API Error:', err.message || err);
       setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
@@ -49,61 +49,28 @@ const MatchFinder = () => {
   };
 
   return (
-    <div>
-      <h2>Find Your Ideal Neighborhood</h2>
-      <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
-        <input
-          type="text"
-          name="city"
-          placeholder="City (e.g. Visakhapatnam)"
-          value={city}
-          onChange={e => setCity(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="number"
-          name="rent_max"
-          placeholder="Max Rent (₹)"
-          value={rentMax}
-          onChange={e => setRentMax(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="number"
-          name="safety"
-          placeholder="Min Safety Rating (0–5)"
-          value={safety}
-          onChange={e => setSafety(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="number"
-          name="schools"
-          placeholder="Min School Rating (0–5)"
-          value={schools}
-          onChange={e => setSchools(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="number"
-          name="parks"
-          placeholder="Min Park Access (0–5)"
-          value={parks}
-          onChange={e => setParks(e.target.value)}
-          required
-        /><br /><br />
-        <button type="submit">Find Matches</button>
+    <div className="match-finder-container">
+      <h2>🏡 Find Your Ideal Neighborhood</h2>
+      <form onSubmit={handleSubmit} className="match-form">
+        <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+        <input type="number" placeholder="Max Rent (₹)" value={rentMax} onChange={(e) => setRentMax(e.target.value)} required />
+        <input type="number" step="0.1" placeholder="Min Safety Rating (0–5)" value={safety} onChange={(e) => setSafety(e.target.value)} required />
+        <input type="number" step="0.1" placeholder="Min School Rating (0–5)" value={schools} onChange={(e) => setSchools(e.target.value)} required />
+        <input type="number" step="0.1" placeholder="Min Park Access (0–5)" value={parks} onChange={(e) => setParks(e.target.value)} required />
+        <button type="submit" disabled={loading}>{loading ? 'Searching...' : 'Find Matches'}</button>
       </form>
 
-      {loading && <p>Loading...</p>}
+      <h3>Matching Neighborhoods:</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <h3>Matching Neighborhoods:</h3>
-      {matches.length > 0 ? (
-        matches.map((match) => <MatchCard key={match._id} match={match} />)
-      ) : (
-        <p>No matches found.</p>
-      )}
+      <ul>
+        {matches.map((match, idx) => (
+          <li key={idx}>
+            <strong>{match.neighborhood}</strong> in <em>{match.city}</em><br />
+            ₹{match.rent_avg} rent | Safety: {match.safety} | Schools: {match.schools} | Parks: {match.parks}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
