@@ -1,0 +1,90 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background-color: #f2f2f2;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.filter-form {
+  padding: 20px;
+  background: #fff;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.filter-form label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.filter-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background: teal;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.results {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px #ccc;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
