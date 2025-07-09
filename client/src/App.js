@@ -1,18 +1,20 @@
-import React from 'react';
-import './App.css';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import MatchFinder from './components/MatchFinder';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import MatchFinder from "./components/MatchFinder";
+import About from "./pages/About";
 
 function App() {
   return (
-    <div id="root">
+    <Router>
       <Navbar />
-      <div className="main-content">
-        <MatchFinder />
-      </div>
+      <Routes>
+        <Route path="/" element={<MatchFinder />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
       <Footer />
-    </div>
+    </Router>
   );
 }
 

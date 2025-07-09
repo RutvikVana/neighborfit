@@ -1,12 +1,12 @@
-import React from 'react';
-import './Footer.css';
+import React from "react";
+import "./Footer.css";
 
-const Footer = () => {
+function Footer() {
   return (
     <footer className="footer">
       <p>© 2025 NeighborFit. All rights reserved.</p>
     </footer>
   );
-};
+}
 
 export default Footer; 

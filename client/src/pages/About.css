@@ -1,0 +1,37 @@
+.about-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.about-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-container h2 {
+  margin-top: 2rem;
+  color: #0077cc;
+}
+
+.about-container ul {
+  list-style: disc;
+  margin-left: 2rem;
+}
+
+.about-container p,
+.about-container li {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.thanks {
+  margin-top: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #444;
+} 
