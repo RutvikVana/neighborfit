@@ -3,43 +3,49 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import MatchCard from './MatchCard';
 
-const API_URL = process.env.REACT_APP_API_BASE_URL;
-
 const MatchFinder = () => {
-  const [formData, setFormData] = useState({
-    city: '',
-    rent_max: '',
-    safety: '',
-    schools: '',
-    parks: ''
-  });
-
+  const [city, setCity] = useState('');
+  const [rentMax, setRentMax] = useState('');
+  const [safety, setSafety] = useState('');
+  const [schools, setSchools] = useState('');
+  const [parks, setParks] = useState('');
   const [matches, setMatches] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    setMatches([]); // Clear previous matches
+    setLoading(true);
+
     try {
-      const res = await axios.post(`${API_URL}/api/match`, {
-        city: formData.city,
-        rent_max: Number(formData.rent_max),
-        safety: Number(formData.safety),
-        schools: Number(formData.schools),
-        parks: Number(formData.parks)
+      const response = await axios.post('https://neighborfit-backend-v6qy.onrender.com/api/match', {
+        city,
+        rent_max: Number(rentMax),
+        safety: Number(safety),
+        schools: Number(schools),
+        parks: Number(parks)
       });
 
-      setMatches(res.data.matches || []);
+      console.log('✅ API Response:', response.data); // Log to debug
+
+      if (response.data && Array.isArray(response.data.matches)) {
+        if (response.data.matches.length > 0) {
+          setMatches(response.data.matches);
+        } else {
+          setError('No matches found.');
+        }
+      } else {
+        setError('Unexpected response format from server.');
+      }
+
     } catch (err) {
+      console.error('❌ Error:', err);
       setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -50,40 +56,40 @@ const MatchFinder = () => {
           type="text"
           name="city"
           placeholder="City (e.g. Visakhapatnam)"
-          value={formData.city}
-          onChange={handleChange}
+          value={city}
+          onChange={e => setCity(e.target.value)}
           required
         /><br /><br />
         <input
           type="number"
           name="rent_max"
           placeholder="Max Rent (₹)"
-          value={formData.rent_max}
-          onChange={handleChange}
+          value={rentMax}
+          onChange={e => setRentMax(e.target.value)}
           required
         /><br /><br />
         <input
           type="number"
           name="safety"
           placeholder="Min Safety Rating (0–5)"
-          value={formData.safety}
-          onChange={handleChange}
+          value={safety}
+          onChange={e => setSafety(e.target.value)}
           required
         /><br /><br />
         <input
           type="number"
           name="schools"
           placeholder="Min School Rating (0–5)"
-          value={formData.schools}
-          onChange={handleChange}
+          value={schools}
+          onChange={e => setSchools(e.target.value)}
           required
         /><br /><br />
         <input
           type="number"
           name="parks"
           placeholder="Min Park Access (0–5)"
-          value={formData.parks}
-          onChange={handleChange}
+          value={parks}
+          onChange={e => setParks(e.target.value)}
           required
         /><br /><br />
         <button type="submit">Find Matches</button>
