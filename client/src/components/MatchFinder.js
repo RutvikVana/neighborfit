@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import MatchCard from './MatchCard';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const MatchFinder = () => {
   const [formData, setFormData] = useState({
     city: '',
@@ -25,7 +27,7 @@ const MatchFinder = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.post('http://localhost:5000/api/match', {
+      const res = await axios.post(`${API_URL}/api/match`, {
         city: formData.city,
         rent_max: Number(formData.rent_max),
         safety: Number(formData.safety),
