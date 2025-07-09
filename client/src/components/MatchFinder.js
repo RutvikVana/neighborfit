@@ -61,6 +61,11 @@ function MatchFinder() {
     ).values()
   );
 
+  // Helper for frontend description
+  const generateDescription = (n) => {
+    return `🏡 ${n.neighborhood}, ${n.city} — A neighborhood with average rent of ₹${n.rent_avg}, safety rating of ${n.safety}/5, schools rated ${n.schools}/5, and parks accessibility of ${n.parks}/5. Ideal for balanced living.`;
+  };
+
   return (
     <div className="match-finder">
       <h1>Find Your Ideal Neighborhood 🏡</h1>
@@ -87,16 +92,13 @@ function MatchFinder() {
       )}
 
       {uniqueMatches.length > 0 && (
-        <div className="results">
-          <h2>Matching Neighborhoods:</h2>
-          <ul>
-            {uniqueMatches.map((match, index) => (
-              <li key={index} className="neighborhood-card">
-                <strong>{match.name || match.neighborhood}</strong> in {match.city} <br />
-                Rent Avg: ₹{match.rent_avg || match.rent} | Safety: {match.safety} | Schools: {match.schools} | Parks: {match.parks}
-              </li>
-            ))}
-          </ul>
+        <div className="match-results">
+          {uniqueMatches.map((n, idx) => (
+            <div key={idx} className="neighborhood-card">
+              <h3>🏘 {n.neighborhood}, {n.city}</h3>
+              <p>{generateDescription(n)}</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
