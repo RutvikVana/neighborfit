@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import MatchCard from './MatchCard';
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_BASE_URL;
 
 const MatchFinder = () => {
   const [formData, setFormData] = useState({
